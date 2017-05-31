@@ -1,0 +1,8 @@
+MIDlet-1: New Midlet,,test.FMMidlet
+MIDlet-Jar-Size: 167633
+MIDlet-Jar-URL: Clover4UTools.jar
+MIDlet-Name: Clover4UTools Midlet Suite
+MIDlet-Vendor: Midlet Suite Vendor
+MIDlet-Version: 1.0.0
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

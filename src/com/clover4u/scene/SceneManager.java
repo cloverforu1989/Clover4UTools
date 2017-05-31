@@ -1,0 +1,125 @@
+package com.clover4u.scene;
+
+import java.util.Vector;
+
+import javax.microedition.lcdui.Graphics;
+
+import com.clover4u.box.Box;
+import com.clover4u.view.View;
+
+public final class SceneManager{
+   /**
+	 * @param args
+	 */
+	
+	private static Vector sceneQuene = new Vector(2,1);
+	private static int size;
+	public static final void addScene(Scene scene) {
+		if(scene != null) {
+			 sceneQuene.addElement(scene);
+			 size ++;
+		}
+		 
+	}
+	public static final void removeScene(Scene scene) {
+		if(scene != null) {
+			scene.freeRes();
+			sceneQuene.removeElement(scene);
+			size --;
+			if(scene.getQuitListener() != null) {
+				scene.getQuitListener().callback();
+				scene.setQuitListener(null);
+			}
+			System.gc();
+		}
+		  
+	}
+	
+	
+	public static void init() {
+		
+	} 
+    
+	public static void draw(Graphics g) {
+		for(int i = 0; i < size(); i++) {
+			Scene scene = ((Scene)sceneQuene.elementAt(i));
+			if(scene.isDisplay()) {
+				scene.draw(g);
+			}
+			scene = null;
+		}
+	}
+	public static void check() {
+		int j = size();
+		for(int i = 0; i < j; i ++) {
+			Scene scene = ((Scene)sceneQuene.elementAt(i));
+			if(scene.isBeQuit()) {
+				removeScene(scene);
+				j--;
+				i--;
+				scene = null;
+				if(j == 0 || i==j - 1) {
+				    break;
+				}
+			}
+		}
+	}
+	public static void update() {
+		int j = size();
+		if(j > 0) {
+			Scene scene = ((Scene)sceneQuene.elementAt(j - 1));
+			if(scene.isBeQuit()) {
+				removeScene(scene);
+			}else if(scene.isBeUpdated()) {
+//				if(scene.isBePressed()) {
+//					scene.keyPressed(scene.getKeyCode());
+//					scene.setBePressed(false);
+//					scene.setKeyCode(Box.KEY_CODE_DEFAULT);
+//				}else if( scene.isBeReleased()) {
+//					scene.keyReleased(scene.getKeyCode());
+//					scene.setBeReleased(false);
+//					scene.setKeyCode(Box.KEY_CODE_DEFAULT);
+//				}
+				scene.update();
+				scene = null;
+			}
+		}
+		
+	}
+	public static void keyPressed(int keyCode) {
+		int j = size();
+		if(j > 0 ) {
+			Scene scene = ((Scene)sceneQuene.elementAt(j - 1));
+			scene.keyPressed(keyCode);
+//			if(scene.getKeyCode() == View.KEY_CODE_DEFAULT)
+//			scene.setKeyCode(keyCode);
+//			if(!scene.isBePressed() && !scene.isKeyLocked() && scene.isKeyAvailable()) {
+//				scene.setBePressed(true);
+//			}else {
+//				scene.setKeyCode(View.KEY_CODE_DEFAULT);
+//			}
+		}
+	}
+	public static void keyReleased(int keyCode) {
+		int j = size();
+		if(j > 0 ) {
+			Scene scene = ((Scene)sceneQuene.elementAt(j - 1));
+			scene.keyReleased(keyCode);
+//			if(scene.getKeyCode() == View.KEY_CODE_DEFAULT)
+//			  scene.setKeyCode(keyCode);
+//			if(!scene.isBeReleased() && !scene.isKeyLocked() && scene.isKeyAvailable()){
+//				scene.setBeReleased(true);
+//			}else {
+//				scene.setKeyCode(View.KEY_CODE_DEFAULT);
+//			}
+		}
+	}
+	
+	public static int size() {
+		int size = 0;
+		if(sceneQuene != null) {
+			size = sceneQuene.size();
+		}
+		return size;
+	}
+}
