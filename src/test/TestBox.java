@@ -6,7 +6,7 @@ import com.clover4u.box.Box;
 import com.clover4u.startup.GameSystem;
 import com.clover4u.utils.Load;
 import com.clover4u.utils.Mtd;
-
+//测试一下git
 public class TestBox extends Box{
    Image img = null;
 	/**
